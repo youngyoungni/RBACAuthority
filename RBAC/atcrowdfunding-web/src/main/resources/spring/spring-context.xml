@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+   
+   <!-- 2.spring 不扫描控制器 -->
+   <context:component-scan base-package="com.young.*">
+   		<!-- 
+   			排除 Controller 注解；
+   			从数据流转的角度，这个类因该是有 sprnigMVC 来进行管理和组织；
+   			故不需要 spring 扫描
+   		 -->
+   		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+   </context:component-scan>
+
+	<!-- 9.配置数据连接池 c3p0 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/atcrowdfunding?rewriteBatchedStatements=true&amp;useUnicode=true&amp;characterEncoding=utf8"/>
+        <property name="user" value="root"/>
+        <property name="password" value="123456"/>
+    </bean>
+
+	<!-- 10.集成 My batis
+		处理业务和数据库之间的数据交互，
+		所以创建对象和管理对象生命周期的职责由 spring 完成
+	 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath*:mybatis/mapper-*.xml</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.young.atcrowdfunding.**.dao"></property>
+	</bean>
+	
+	<!-- 11.spring 声明式事务
+		为了保证数据操作的一致性，必须在程序中增加事务处理。
+		通过 AOP 的方式将事务增加到业务中。
+	 -->
+	 <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	 	<property name="dataSource" ref="dataSource"></property>
+	 </bean>
+	 <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+	 	<tx:attributes>
+	 		<tx:method name="*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+	 		<!-- 只读事务 -->
+	 		<tx:method name="query" read-only="true"/>
+	 	</tx:attributes>
+	 </tx:advice>
+	 <aop:config>
+	 	<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* com.young..*Service.*(..))"/>
+	 </aop:config>
+</beans>

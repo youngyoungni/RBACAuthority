@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	<!-- springMVC 的核心就是处理数据的流转，
+		所以需要在 springMVC 进行扫描控制器对象（服务层），
+		扫描后由sprnigMVC 进行管理和组合
+	 -->
+	<!-- 4.spring MVC 对 Controller进行扫描 -->
+	<context:component-scan base-package="com.young.*" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	<!-- 5.spring MVC 不拦截静态资源 -->
+	<mvc:default-servlet-handler/>
+	<mvc:annotation-driven/>
+	
+	<!-- 6.配置视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<!-- 7.返回数据处理为“JSON”，指定字符串的类型及编码方式
+		如果加了 <mvc:annotation-driven/> 此配置可以不使用。
+	 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>application/json;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 8.文件上传解析器 -->
+	<bean id="multipartResolver"
+	 class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+	 p:defaultEncoding="UTF-8">
+		<property name="maxUploadSize" value="2097152"></property>
+		<property name="resolveLazily" value="true"></property>
+	</bean>
+	
+	
+</beans>
