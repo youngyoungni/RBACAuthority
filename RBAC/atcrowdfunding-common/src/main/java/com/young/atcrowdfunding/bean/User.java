@@ -5,8 +5,7 @@ public class User {
 	private Integer id;
 	private String username;
 	
-	//修改112312
-	
+//github.com/youngyoungni/RBACAuthority.git
 	public Integer getId() {
 		return id;
 	}
