@@ -20,4 +20,10 @@ public class UserServiceImpl implements UserService {
 	public List<User> queryAll() {
 		return userDao.queryAll();
 	}
+
+
+	@Override
+	public User queryLogin(User user) {
+		return userDao.queryLogin(user);
+	}
 }

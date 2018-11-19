@@ -8,4 +8,6 @@ public interface UserService {
 
 	List<User> queryAll();
 
+	User queryLogin(User user);
+
 }

@@ -15,6 +15,29 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
+	<!-- 1-1 字符编码过滤器
+		只要请求被 SpringMVC 拦截，就过滤字符，
+		但这只解决了 (Post)请求参数的编码，
+		还有请求头参数(Get)，需要到 tomcat 的 server.xml :URIEncoding="UTF-8"
+		<Connector URIEncoding="UTF-8" connectionTimeout="20000" port="801" protocol="HTTP/1.1" redirectPort="8443"/>
+	 -->
+	<filter>
+		<filter-name>encoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encoding</filter-name>
+		<servlet-name>springmvc</servlet-name>
+	</filter-mapping>
+	
 	<!-- 3.配置 sprnigMVC	- servlet
 		sprnigMVC 用于处理系统系统中数据的流转及控制操作
 		（从哪里来，到哪里去）
@@ -33,5 +56,8 @@
 		<servlet-name>springmvc</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	
+
+	
 	
 </web-app>
