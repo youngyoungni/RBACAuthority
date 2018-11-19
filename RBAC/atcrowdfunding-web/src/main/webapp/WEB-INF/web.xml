@@ -15,6 +15,11 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
+	<!-- 配置加载 APP_PATH 路径   -->
+	<listener>
+		<listener-class>com.young.atcrowdfunding.web.ServerStartupListener</listener-class>
+	</listener>
+	
 	<!-- 1-1 字符编码过滤器
 		只要请求被 SpringMVC 拦截，就过滤字符，
 		但这只解决了 (Post)请求参数的编码，
