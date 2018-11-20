@@ -15,4 +15,19 @@ public interface UserService {
 
 	int pageQueryCount(Map<String, Object> map);
 
+	void insert(User user);
+
+	User queryById(String id);
+
+	void update(User user);
+
+	void updates(Map<String, Object> map);
+
+	List<Integer> queryRoleidsByUserid(String id);
+
+	void insertUserRoles(Map<String, Object> map);
+
+	void deleteUserRoles(Map<String, Object> map);
+
+
 }

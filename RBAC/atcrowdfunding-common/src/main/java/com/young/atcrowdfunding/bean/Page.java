@@ -45,6 +45,12 @@ public class Page<T> {
 	public void setTotalSize(int totalSize) {
 		this.totalSize = totalSize;
 	}
+
+	@Override
+	public String toString() {
+		return "Page [Datas=" + Datas + ", pageNo=" + pageNo + ", totalNo=" + totalNo + ", totalSize=" + totalSize
+				+ "]";
+	}
 	
 	
 	

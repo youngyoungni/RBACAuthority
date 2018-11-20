@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="UTF-8">
   <head>
@@ -10,17 +10,15 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-	<!-- 前台解析路径 -->
 	<link rel="stylesheet" href="${APP_PATH}/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${APP_PATH}/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${APP_PATH}/css/main.css">
+	<link rel="stylesheet" href="${APP_PATH}/css/doc.min.css">
 	<style>
 	.tree li {
         list-style-type: none;
 		cursor:pointer;
 	}
-	table tbody tr:nth-child(odd){background:#F4F4F4;}
-	table tbody td:nth-child(even){color:#C00;}
 	</style>
   </head>
 
@@ -29,7 +27,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <div><a class="navbar-brand" style="font-size:32px;" href="#">众筹平台 - 用户维护</a></div>
+            <div><a class="navbar-brand" style="font-size:32px;" href="user.html">众筹平台 - 用户维护</a></div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -42,7 +40,7 @@
 						<li><a href="#"><i class="glyphicon glyphicon-cog"></i> 个人设置</a></li>
 						<li><a href="#"><i class="glyphicon glyphicon-comment"></i> 消息</a></li>
 						<li class="divider"></li>
-						<li><a href="index.html"><i class="glyphicon glyphicon-off"></i> 退出系统</a></li>
+						<li><a href="login.html"><i class="glyphicon glyphicon-off"></i> 退出系统</a></li>
 					  </ul>
 			    </div>
 			</li>
@@ -71,10 +69,10 @@
 						<span><i class="glyphicon glyphicon glyphicon-tasks"></i> 权限管理 <span class="badge" style="float:right">3</span></span> 
 						<ul style="margin-top:10px;">
 							<li style="height:30px;">
-								<a href="user.html" style="color:red;"><i class="glyphicon glyphicon-user"></i> 用户维护</a> 
+								<a href="${APP_PATH }/user/indexAjax" style="color:red;"><i class="glyphicon glyphicon-user"></i> 用户维护</a> 
 							</li>
 							<li style="height:30px;">
-								<a href="role.html"><i class="glyphicon glyphicon-king"></i> 角色维护</a> 
+								<a href="${APP_PATH }/role/index"><i class="glyphicon glyphicon-certificate"></i> 角色维护</a> 
 							</li>
 							<li style="height:30px;">
 								<a href="permission.html"><i class="glyphicon glyphicon-lock"></i> 许可维护</a> 
@@ -128,88 +126,76 @@
 			</div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<ol class="breadcrumb">
+				  <li><a href="#">首页</a></li>
+				  <li><a href="#">数据列表</a></li>
+				  <li class="active">分配角色</li>
+				</ol>
 			<div class="panel panel-default">
-			  <div class="panel-heading">
-				<h3 class="panel-title"><i class="glyphicon glyphicon-th"></i> 数据列表</h3>
-			  </div>
 			  <div class="panel-body">
-<form class="form-inline" role="form" style="float:left;">
-  <div class="form-group has-feedback">
-    <div class="input-group">
-      <div class="input-group-addon">查询条件</div>
-      <input class="form-control has-success" type="text" placeholder="请输入查询条件">
-    </div>
-  </div>
-  <button type="button" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询</button>
-</form>
-<button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
-<button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='add.html'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
-<br>
- <hr style="clear:both;">
-          <div class="table-responsive">
-            <table class="table  table-bordered">
-              <thead>
-                <tr >
-                  <th width="30">#</th>
-				  <th width="30"><input type="checkbox"></th>
-                  <th>账号</th>
-                  <th>名称</th>
-                  <th>邮箱地址</th>
-                  <th width="100">操作</th>
-                </tr>
-              </thead>
-              <tbody>
-              	<c:forEach items="${users }" var="user" varStatus="status">
-	              	<tr>
-	                  <td>${status.count }</td>
-					  <td><input type="checkbox"></td>
-	                  <td>${user.loginacct }</td>
-	                  <td>${user.username }</td>
-	                  <td>${user.email }</td>
-	                  <td>
-					      <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
-					      <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-						  <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-					  </td>
-	                </tr>
-              	</c:forEach>
-                
-              </tbody>
-			  <tfoot>
-			     <tr >
-				     <td colspan="6" align="center">
-						<ul class="pagination">
-							<c:if test="${pageNo > 1 }">
-								<!--  class="disabled" -->
-								<li ><a href="#" onclick="changePageNo(${pageNo - 1})">上一页</a></li>
-							</c:if>
-							<c:forEach begin="1" varStatus="status" end="${totalNo }">
-								<c:if test="${pageNo == status.count }">
-									<li class="active"><a href="#">${status.count }</a></li>
-								</c:if>
-								<c:if test="${pageNo != status.count }">
-									<li><a href="#" onclick="changePageNo(${status.count })">${status.count }</a></li>
-								</c:if>
-							</c:forEach>
-							<c:if test="${pageNo < totalNo }">
-								<li><a href="#" onclick="changePageNo(${pageNo + 1})">下一页</a></li>
-							</c:if>
-						</ul>
-					 </td>
-				 </tr>
-
-			  </tfoot>
-            </table>
-          </div>
+				<form role="form" id="roleForm" class="form-inline">
+					<input type="hidden" name="userid" value="${user.id }"/>
+				  <div class="form-group">
+					<label for="exampleInputPassword1">未分配角色列表</label><br>
+					
+					<select id="leftList" name="unassignroleids" class="form-control" multiple size="10" style="width:201px;overflow-y:auto;">
+						<c:forEach items="${unassignedRoles }" var="role" >
+                        	<option value="${role.roleId }">${role.name }</option>
+						</c:forEach>
+                    </select>
+                    
+				  </div>
+				  <div class="form-group">
+                        <ul>
+                            <li id="left2RightBtn" class="btn btn-default glyphicon glyphicon-chevron-right"></li>
+                            <br>
+                            <li id="right2LeftBtn" class="btn btn-default glyphicon glyphicon-chevron-left" style="margin-top:10px;"></li>
+                        </ul>
+				  </div>
+				  <div class="form-group" style="margin-left:40px;">
+					<label for="exampleInputPassword1">已分配角色列表</label><br>
+					<select id="rightList" name="assignroleids" class="form-control" multiple size="10" style="width:201px;overflow-y:auto;">
+                    	<c:forEach items="${assignedRoles }" var="role" >
+                        	<option value="${role.roleId }">${role.name }</option>
+						</c:forEach>
+                    </select>
+				  </div>
+				</form>
 			  </div>
 			</div>
         </div>
       </div>
     </div>
-
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			<h4 class="modal-title" id="myModalLabel">帮助</h4>
+		  </div>
+		  <div class="modal-body">
+			<div class="bs-callout bs-callout-info">
+				<h4>测试标题1</h4>
+				<p>测试内容1，测试内容1，测试内容1，测试内容1，测试内容1，测试内容1</p>
+			  </div>
+			<div class="bs-callout bs-callout-info">
+				<h4>测试标题2</h4>
+				<p>测试内容2，测试内容2，测试内容2，测试内容2，测试内容2，测试内容2</p>
+			  </div>
+		  </div>
+		  <!--
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Save changes</button>
+		  </div>
+		  -->
+		</div>
+	  </div>
+	</div>
     <script src="${APP_PATH}/jquery/jquery-2.1.1.min.js"></script>
     <script src="${APP_PATH}/bootstrap/js/bootstrap.min.js"></script>
 	<script src="${APP_PATH}/script/docs.min.js"></script>
+	<script src="${APP_PATH}/layer/layer.js"></script>
         <script type="text/javascript">
             $(function () {
 			    $(".list-group-item").click(function(){
@@ -222,17 +208,55 @@
 						}
 					}
 				});
+			    $("#left2RightBtn").click(function(){
+			    	var opts = $("#leftList :selected");
+			    	if( opts.length == 0){
+	            		layer.msg("请选中需要的角色信息", {time:2000, icon:5, shift:6}, function(){
+						});
+	            		return;
+			    	}
+			    	$.ajax({
+			    		type	: "POST",
+			    		url		: "${APP_PATH}/user/doAssign",
+			    		data	: $("#roleForm").serialize(),
+			    		success : function(result){
+			    			if( result.success ){
+			    				$("#rightList").append(opts);
+			    				layer.msg("分配角色成功", {time:2000, icon:6}, function(){
+								});
+			    			}else{
+			    				layer.msg("分配角色失败", {time:2000, icon:5, shift:6}, function(){
+								});
+			    			}
+			    		}
+			    	});
+    				
+			    });
+			    $("#right2LeftBtn").click(function(){
+			    	var opts = $("#rightList :selected");
+			    	if( opts.length == 0){
+	            		layer.msg("请选中不需要的权限信息", {time:2000, icon:5, shift:6}, function(){
+						});
+	            		return;
+			    	}
+			    	$.ajax({
+			    		type	: "POST",
+			    		url		: "${APP_PATH}/user/dounAssign",
+			    		data	: $("#roleForm").serialize(),
+			    		success : function(result){
+			    			if( result.success ){
+						    	$("#leftList").append(opts);
+			    				layer.msg("取消分配角色成功", {time:2000, icon:6}, function(){
+								});
+			    			}else{
+			    				layer.msg("取消分配角色失败", {time:2000, icon:5, shift:6}, function(){
+								});
+			    			}
+			    		}
+			    	});
+			    });
             });
-            $("tbody .btn-success").click(function(){
-                window.location.href = "assignRole.html";
-            });
-            $("tbody .btn-primary").click(function(){
-                window.location.href = "edit.html";
-            });
-            
-            function changePageNo(pageNo){
-            	window.location.href="${APP_PATH}/user/index?pageNo="+pageNo;
-            }
         </script>
   </body>
 </html>
+    
