@@ -79,6 +79,12 @@ public class RoleServiceImpl implements RoleService {
 		return roleDao.queryAll();
 	}
 
+	@Override
+	public void insertRolePermission(Map<String, Object> map) {
+		roleDao.deleteROlePermissions(map);	//删除之前的许可
+		roleDao.insertRolePermission(map);
+	}
+
 
 
 }

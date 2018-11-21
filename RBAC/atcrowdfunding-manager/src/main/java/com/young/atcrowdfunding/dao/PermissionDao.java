@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 
 import com.young.atcrowdfunding.bean.Permission;
+import com.young.atcrowdfunding.bean.User;
 
 public interface PermissionDao {
 
@@ -27,5 +28,11 @@ public interface PermissionDao {
 
 	@Delete("delete from t_permission where id = #{id}")
 	void delete(Integer id);
+
+	@Select("select permissionid from t_role_permission where roleid = #{roleid}")
+	List<Integer> queryPermissionidByRoleid(Integer roleid);
+
+	
+	List<Permission> queryPermissionidByUser(User dbUser);
 
 }

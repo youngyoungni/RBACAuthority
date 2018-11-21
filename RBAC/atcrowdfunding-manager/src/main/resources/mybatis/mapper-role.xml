@@ -41,6 +41,14 @@
 		insert into t_role(name,create_time) values(#{name},#{createTime})
 	</insert>
 	
+	<insert id="insertRolePermission">
+		insert into t_role_permission(roleid, permissionid) values 
+		<foreach collection="permissionids" item="permissionid" separator=",">
+			( #{roleid}, #{permissionid} )
+		</foreach>
+		
+	</insert>
+	
 	<select id="queryById" resultMap="roleMap">
 		select * from t_role where role_id=#{id}
 	</select>
@@ -64,5 +72,7 @@
 	<select id="queryAll" resultMap="roleMap">
 		select * from t_role where is_delete = 'n'
 	</select>
+	
+
 	
 </mapper>

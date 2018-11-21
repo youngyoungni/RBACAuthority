@@ -82,6 +82,42 @@ public class PermissionController {
 		return "permission/permission_index";
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping("/loadAssignData")
+	public Object loadAssignData( Integer roleid) {
+		 List<Permission> permissions = new ArrayList<Permission>();
+		 List<Permission> ps = permissionService.queryAll();
+		 
+		 //获取当前角色已经分配的许可信息（t_role_permission permissionid）
+		 List<Integer> permissionids = permissionService.queryPermissionidByRoleid(roleid);
+		 
+		 Map<Integer, Permission> permissionMap = new HashMap<Integer, Permission>();
+			//组装数据到 Map
+			for (Permission p : ps) {
+				//判断 roleid 角色中 是否包含此许可信息
+				if( permissionids.contains(p.getId())) {
+					p.setChecked(true);
+				}else {
+					p.setChecked(false);
+				}
+				permissionMap.put(p.getId(), p);
+			}
+			//站在子节点考虑，通过子节点去匹配父节点
+			for ( Permission p : ps ) {
+				Permission child = p;	//把每个节点都看成是子节点
+				if ( child.getPid() == 0 ) {
+					//顶级节点
+					permissions.add(p);
+				} else {
+					//父节点 = permissionMap.get(child.getPid())通过子节点的 Pid 来匹配父节点的 Id
+					Permission parent = permissionMap.get(child.getPid());
+					//组合父子节点的关系
+					parent.getChildren().add(child);
+				}
+			}
+			return permissions;
+		}
 	@ResponseBody
 	@RequestMapping("/loadData")
 	public Object loadData() {
@@ -152,7 +188,7 @@ public class PermissionController {
 				//顶级节点
 				permissions.add(p);
 			} else {
-				//父节点
+				//父节点 = permissionMap.get(child.getPid())通过子节点的 Pid 来匹配父节点的 Id
 				Permission parent = permissionMap.get(child.getPid());
 				//组合父子节点的关系
 				parent.getChildren().add(child);

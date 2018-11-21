@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.young.atcrowdfunding.dao.PermissionDao" >
 
+	<select id="queryPermissionidByUser" resultType="com.young.atcrowdfunding.bean.Permission">
+		select * from t_permission where id in(
+			select permissionid from t_role_permission where roleid in(
+				select roleid from t_user_role where userid = #{id}
+			)
+		)
+	</select>
+
 	<insert id="insert">
 		insert into t_permission(
 			name,url,pid
@@ -15,4 +23,6 @@
 		set name = ${name} , url = ${url}
 		where id = #{id}
 	</update>
+	
+	
 </mapper>

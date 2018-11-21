@@ -285,7 +285,7 @@
 	          					tableConent += '  <td><input type="checkbox" name="roleId" value="'+role.roleId+'"></td>';
 	          	                tableConent += '  <td>'+role.name+'</td>';
 	          	                tableConent += '  <td>';
-	          					tableConent += '      <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+	          					tableConent += '      <button type="button" onclick="goAssignPage('+role.roleId+')" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
 	          					tableConent += '      <button type="button" onclick="goUpdatePage('+role.roleId+')" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
 	          					tableConent += '	  <button type="button" onclick="deleteRole('+role.roleId+',\''+role.name+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
 	          					tableConent += '  </td>';
@@ -320,7 +320,10 @@
             function goUpdatePage(id){
             	window.location.href = "${APP_PATH}/role/edit?id="+id;
             }
-
+            //去编辑许可页面
+			function goAssignPage(id){
+				window.location.href = "${APP_PATH}/role/assign?id="+id;
+			}
             //单个删除
             function deleteRole(roleId,name){
             	var loadingIndex = null;
@@ -347,8 +350,6 @@
                 					}
                 				}
                 			});
-                			
-                			
     	    			    layer.close(cindex);
     	    			},
     	    			function(cindex){

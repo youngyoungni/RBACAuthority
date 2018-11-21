@@ -1,5 +1,8 @@
 package com.young.atcrowdfunding.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -100,6 +103,34 @@ public class RoleController {
 	@RequestMapping( value = "/index", method = RequestMethod.GET )
 	public String index() {
 		return "role/role_index";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/doAssign")
+	public Object doAssign( Integer roleid, Integer[] permissionids) {
+		AJAXResult result = new AJAXResult();
+		
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("roleid", roleid);
+			map.put("permissionids", permissionids);
+			
+			roleService.insertRolePermission(map);
+			result.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setSuccess(false);
+		}
+		return result;
+		
+	}
+	
+	@RequestMapping( value = "/assign", method = RequestMethod.GET )
+	public String assign( Integer id , Model model) {
+		
+		
+		model.addAttribute("roleid", id);
+		return "role/assign";
 	}
 	
 }

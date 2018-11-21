@@ -52,5 +52,36 @@
 		<property name="resolveLazily" value="true"></property>
 	</bean>
 	
+	<!-- 配置登录拦截器 -->
+	<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/login" />
+            <mvc:exclude-mapping path="/doAJAXLogin" />
+            <mvc:exclude-mapping path="/bootstrap/**" />
+            <mvc:exclude-mapping path="/css/**" />
+            <mvc:exclude-mapping path="/fonts/**" />
+            <mvc:exclude-mapping path="/img/**" />
+            <mvc:exclude-mapping path="/jquery/**" />
+            <mvc:exclude-mapping path="/layer/**" />
+            <mvc:exclude-mapping path="/script/**" />
+            <mvc:exclude-mapping path="/ztree/**" />
+            <bean class="com.young.atcrowdfunding.web.LoginInterceptor"></bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/login" />
+            <mvc:exclude-mapping path="/doAJAXLogin" />
+            <mvc:exclude-mapping path="/bootstrap/**" />
+            <mvc:exclude-mapping path="/css/**" />
+            <mvc:exclude-mapping path="/fonts/**" />
+            <mvc:exclude-mapping path="/img/**" />
+            <mvc:exclude-mapping path="/jquery/**" />
+            <mvc:exclude-mapping path="/layer/**" />
+            <mvc:exclude-mapping path="/script/**" />
+            <mvc:exclude-mapping path="/ztree/**" />
+            <bean class="com.young.atcrowdfunding.web.AuthInterception"></bean>
+        </mvc:interceptor>
+	</mvc:interceptors>
 	
 </beans>

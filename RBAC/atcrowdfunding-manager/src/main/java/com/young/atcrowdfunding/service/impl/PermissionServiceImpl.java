@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.young.atcrowdfunding.bean.Permission;
+import com.young.atcrowdfunding.bean.User;
 import com.young.atcrowdfunding.dao.PermissionDao;
 import com.young.atcrowdfunding.service.PermissionService;
 
@@ -54,6 +55,18 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public void delete(Integer id) {
 		permissionDao.delete(id);
+	}
+
+	@Override
+	public List<Integer> queryPermissionidByRoleid(Integer roleid) {
+		// TODO Auto-generated method stub
+		return permissionDao.queryPermissionidByRoleid(roleid);
+	}
+
+	@Override
+	public List<Permission> queryPermissionidByUser(User dbUser) {
+		// TODO Auto-generated method stub
+		return permissionDao.queryPermissionidByUser(dbUser);
 	}
 	
 	

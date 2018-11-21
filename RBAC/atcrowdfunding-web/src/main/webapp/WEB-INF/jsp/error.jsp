@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Index</title>
+<title>error</title>
 </head>
 <body>
-	Index Page
+	非法路径访问
 </body>
 </html>

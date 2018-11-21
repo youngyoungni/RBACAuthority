@@ -3,6 +3,7 @@ package com.young.atcrowdfunding.service;
 import java.util.List;
 
 import com.young.atcrowdfunding.bean.Permission;
+import com.young.atcrowdfunding.bean.User;
 
 public interface PermissionService {
 
@@ -19,5 +20,9 @@ public interface PermissionService {
 	void update(Permission permission);
 
 	void delete(Integer id);
+
+	List<Integer> queryPermissionidByRoleid(Integer roleid);
+
+	List<Permission> queryPermissionidByUser(User dbUser);
 
 }
