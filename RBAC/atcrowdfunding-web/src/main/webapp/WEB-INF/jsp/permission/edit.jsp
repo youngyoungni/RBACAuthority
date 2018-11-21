@@ -133,22 +133,17 @@
 			<div class="panel panel-default">
               <div class="panel-heading">表单数据<div style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-question-sign"></i></div></div>
 			  <div class="panel-body">
-				<form id="userForm" role="form">
+				<form role="form">
 				  <div class="form-group">
-					<label for="exampleInputPassword1">登录账号</label> 
-					<input type="text" name="loginacct" class="form-control" id="loginacct" value="${user.loginacct }" placeholder="请输入登录账号">
+					<label for="exampleInputPassword1">许可名称</label>
+					<input type="text" name="loginacct" class="form-control" id="permissionname" value="${permission.name }" placeholder="请输入许可名称">
 				  </div>
 				  <div class="form-group">
-					<label for="exampleInputPassword1">用户名称</label>
-					<input type="text" name="username" class="form-control" id="username" value="${user.username }" placeholder="请输入用户名称">
-				  </div>
-				  <div class="form-group">
-					<label for="exampleInputEmail1">邮箱地址</label>
-					<input type="email" name="email" class="form-control" id="email" value="${user.email }" placeholder="请输入邮箱地址">
-					<p class="help-block label label-warning">请输入合法的邮箱地址, 格式为： xxxx@xxxx.com</p>
+					<label for="exampleInputPassword1">链接地址</label>
+					<input type="text" name="username" class="form-control" id="url" value="${permission.url }" placeholder="请输入链接地址">
 				  </div>
 				  <button id="updateBtn" type="button" class="btn btn-success"><i class="glyphicon glyphicon-pencil"></i>修改</button>
-				  <button id="resetBtn" type="button" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
+				  <button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
 				</form>
 			  </div>
 			</div>
@@ -197,30 +192,21 @@
 						}
 					}
 				});
-			    
-			    $("#resetBtn").click(function(){
-			    	//Jquery 对象转化为 Doc 对象
-			    	$("#userForm")[0].reset();
-			    	//Doc 转 Jquery: $(Doc) = Jquery
-			    });
-
-			    
 			    $("#updateBtn").click(function(){
 			    	var loadingIndex = null;
-			    	var loginacct = $("#loginacct").val();
-			    	if( loginacct == ""){
-			    		layer.msg("登录账号不能为空，请输入", {time:2000, icon:5, shift:6}, function(){
+			    	var permissionname = $("#permissionname").val();
+			    	if( permissionname == ""){
+			    		layer.msg("许可名称不能为空，请输入", {time:2000, icon:5, shift:6}, function(){
     					});
 			    		return;
 			    	}
 			    	$.ajax({
 			    		type	: "POST",
-			    		url		: "${APP_PATH}/user/update",
+			    		url		: "${APP_PATH}/permission/update",
 			    		data	: {
-			    			"loginacct" : loginacct,
-			    			"username"	: $("#username").val(),
-			    			"email"		: $("#email").val(),
-			    			"id"		: "${user.id}"
+			    			"name" 	: permissionname,
+			    			"url"	: $("#url").val(),
+			    			"id"  	: "${permission.id}"
 			    		},
 			    		beforeSend : function(){
 			    			loadingIndex = layer.msg("处理中",{icon: 16});
@@ -228,11 +214,11 @@
 			    		success	: function(result){
 			    			layer.close(loadingIndex);
 			    			if( result.success ){
-			    				layer.msg("用户信息修改成功", {time:1000, icon:1 ,shift:2}, function(){
-				    				window.location.href = "${APP_PATH}/user/indexAjax";
+			    				layer.msg("许可信息修改成功", {time:1000, icon:1 ,shift:2}, function(){
+				    				window.location.href = "${APP_PATH}/permission/index";
 			    				});	
 			    			}else{
-			    				layer.msg("用户信息修改失败，请重新操作", {time:1000, icon:5, shift:2}, function(){
+			    				layer.msg("许可信息修改失败，请重新操作", {time:1000, icon:5, shift:2}, function(){
 		    					});	
 			    			}
 			    		}
